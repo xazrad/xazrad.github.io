@@ -7,7 +7,7 @@ define(['backbone'],
         var app = {};
 
         app.HostCollection = Backbone.Collection.extend({
-            url: 'http://chicago.it-open.net/v1/host/',
+            url: 'https://chicago.it-open.net/v1/host/',
             model: Backbone.Model
         });
 

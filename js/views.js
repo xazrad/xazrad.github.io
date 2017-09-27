@@ -37,6 +37,7 @@ define([
                     this.showChildView('body', new LoadingDoneView({
                         data: data
                     }));
+                    Backbone.history.navigate('emails/10', {trigger: true});
                 }
             },
             onRender: function () {
