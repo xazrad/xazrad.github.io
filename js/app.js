@@ -20,10 +20,10 @@ function($, Backbone, Marionette, _, collections, views, routers) {
             /** Starts the URL handling framework */
             // Backbone.history.start();
 
-            var content = new views.Content({
-                collection: this.hostCollection
-            });
-            content.render();
+            // var content = new views.Content({
+            //     collection: this.hostCollection
+            // });
+            // content.render();
         }
     });
 
