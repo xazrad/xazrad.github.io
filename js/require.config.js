@@ -9,7 +9,8 @@ require.config({
 		backbone: '../vendors/backbone-min',
 		'backbone.radio': '../vendors/backbone.radio.min',
 		underscore: '../vendors/underscore-min',
-		marionette: '../vendors/backbone.marionette.min'
+		marionette: '../vendors/backbone.marionette.min',
+        md5: '../vendors/md5.min'
     },
 	shim: {
         underscore: {

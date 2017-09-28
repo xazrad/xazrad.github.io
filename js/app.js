@@ -6,7 +6,7 @@ require([
     'collections',
     'views',
     'routers',
-    'globals'
+    // 'globals'
 ],
 function($, Backbone, Marionette, _, collections, views, routers) {
 

@@ -20,19 +20,19 @@
                         <legend class="relative">Вход
                             <a href="#signup" class="right">Регистрация</a>
                         </legend>
-                        <div class="alert alert-danger"> Ошибка</div>
+                        <div name="messages"></div>
                         <div class="pure-control-group">
                             <label for="name">Email</label>
-                            <input id="name" type="text" placeholder="Email">
+                            <input id="name" name="email" type="text" placeholder="Email">
                         </div>
 
                         <div class="pure-control-group">
                             <label for="password">Пароль</label>
-                            <input id="password" type="password" placeholder="Пароль">
+                            <input id="password" name="password" type="password" placeholder="Пароль">
                         </div>
 
                         <div class="pure-controls">
-                            <button type="submit" class="pure-button pure-button-primary">Войти</button>
+                            <button type="button" name="send" class="pure-button pure-button-primary">Войти</button>
                         </div>
                     </fieldset>
                 </form>
@@ -148,6 +148,10 @@
             </div>
         </div>
 
+    </script>
+
+    <script type="text/template" id="alertbox-template">
+        <div class="alert alert-danger"><%= message %></div>
     </script>
     <script src="vendors/require.js"></script>
     <script src="js/require.config.js"></script>
