@@ -32,6 +32,7 @@ define([
                 this.getOption('app').showView(new views.HostListView() );
             },
             login: function () {
+                localStorage.removeItem('accessKey');
                 this.getOption('app').showView(new views.LoginView() );
             },
             signup: function () {
