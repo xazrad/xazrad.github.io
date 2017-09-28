@@ -4,31 +4,45 @@
 
 define([
         'backbone',
-        'marionette'
+        'marionette',
+        'views'
     ],
-    function(Backbone, Marionette) {
+    function(Backbone, Marionette, views) {
 
         var app = {};
 
         app.MainRouter = Marionette.AppRouter.extend({
             routes: {
                 '': 'index',
-                'login': 'login'
+                'login': 'login',
+                'signup': 'signup',
+                'reset-password': 'resetPassword',
+                '*actions': 'other'
+
+
+            },
+            other: function () {
+                this.navigate('', true);
             },
             index: function () {
                 if (!localStorage.accessKey) {
                     this.navigate('login', {trigger: true});
                     return
                 }
-                console.log('index');
+                this.getOption('app').showView(new views.HostListView() );
             },
             login: function () {
-                console.log('login');
+                this.getOption('app').showView(new views.LoginView() );
             },
-            onRoute: function(name, path, args) {
-                console.log('User navigated to ' + name+' / '+path+ ' / '+args);
+            signup: function () {
+                this.getOption('app').showView(new views.SignUpView() );
+            },
+            resetPassword: function () {
+                this.getOption('app').showView(new views.ResetPasswordView() );
             }
-
+            // onRoute: function(name, path, args) {
+            //     console.log('User navigated to ' + name+' / '+path+ ' / '+args);
+            // }
         });
 
         return app;

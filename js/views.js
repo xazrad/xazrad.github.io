@@ -12,38 +12,20 @@ define([
     function($, Backbone, _) {
         var app = {};
 
-        var LoadingView = Backbone.Marionette.View.extend({
-            template: '#loading'
+        app.LoginView = Backbone.Marionette.View.extend({
+            template: _.template($('#login-template').html())
         });
 
-        var LoadingDoneView = Backbone.Marionette.View.extend({
-            template: '#loadingDone',
-            templateContext: function () {
-                return {data: this.getOption('data')};
-            }
+        app.SignUpView = Backbone.Marionette.View.extend({
+            template: _.template($('#signup-template').html())
         });
 
-        app.Content = Backbone.Marionette.View.extend({
-            el: '#content',
-            template: _.noop,
-            regions: {
-                body: '.grid_16'
-            },
-            collectionEvents: {
-                'sync': function () {
-                    var data = this.collection.toJSON();
-                    console.log(data);
-                    console.log('Прогрузили');
-                    this.showChildView('body', new LoadingDoneView({
-                        data: data
-                    }));
-                    Backbone.history.navigate('emails/10', {trigger: true});
-                }
-            },
-            onRender: function () {
-                this.showChildView('body', new LoadingView());
-                this.collection.fetch();
-            }
+        app.ResetPasswordView = Backbone.Marionette.View.extend({
+            template: _.template($('#reset-password-template').html())
+        });
+
+        app.HostListView = Backbone.Marionette.View.extend({
+            template: _.template($('#hostlist-template').html())
         });
 
         return app;
