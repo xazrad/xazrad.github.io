@@ -7,10 +7,10 @@ define([
         'jquery',
         'backbone',
         'underscore',
-        'md5',
+        'authSync',
         'marionette'
     ],
-    function($, Backbone, _, md5) {
+    function($, Backbone, _, authSync) {
         var app = {};
 
         var AlertMessage = Backbone.Marionette.View.extend({
@@ -33,75 +33,22 @@ define([
             regions: {
                 alert: 'div[name="messages"]'
             },
+            initialize: function () {
+                this.syncOb = new authSync.AuthSyncObj({
+                    view: this
+                });
+                this.listenTo(this.syncOb, 'alert', function (data) {
+                    console.log('catch alert');
+                    this.showChildView('alert', new AlertMessage({data: data}));
+                }, this);
+            },
             showAlert: function (data) {
                 this.showChildView('alert', new AlertMessage({data: data}));
             },
             enterAction: function () {
                 var email = this.getUI('email').val();
                 var password = this.getUI('password').val();
-                if (!email || !password) {
-                    var data = {};
-                    data.status = 'danger';
-                    data.message = 'Не все поля заполнены';
-                    this.showAlert(data);
-                    return
-                }
-
-                var secretAuth;
-                try {
-                    secretAuth = btoa(email + ":" + md5(password));
-                } catch (err) {
-                    data = {};
-                    data.status = 'danger';
-                    data.message = 'Некорретные символы';
-                    this.showAlert(data);
-                    return
-                }
-                var dummy = {
-                    url: function () {
-                        return 'https://chicago.it-open.net/v1/auth/signin/'
-                    },
-                    trigger: function () {
-
-                    },
-                    toJSON: function () {
-                        return {"describe": "WEBApp"};
-                    }
-                };
-                var self = this;
-                var options = {
-                    success: function (model, resp, xhr) {
-                        if (!model.ok) {
-                            var codeError = model.error.code;
-                            if (codeError == 427 || codeError == 428) {
-                                var data = {};
-                                data.status = 'danger';
-                                data.message = 'Неверные данные';
-                                self.showAlert(data);
-                                return;
-                            }
-                            if (codeError == 429) {
-                                var data = {};
-                                data.status = 'danger';
-                                data.message = 'Вы не подтвердили email';
-                                self.showAlert(data);
-                                return;
-                            }
-                        } else {
-                            var accessKey = model.result;
-                            localStorage.accessKey = accessKey;
-                            Backbone.history.navigate('', {trigger: true});
-                        }
-                    },
-                    error: function () {
-                        console.log('error');
-                    },
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader("Authorization", "Basic " + secretAuth);
-                    }
-                };
-
-                Backbone.sync("create", dummy, options);
+                this.syncOb.login(email, password);
             }
         });
 
