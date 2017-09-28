@@ -90,14 +90,14 @@
                     <legend class="relative">Восстановление пароля
                         <a href="#login" class="right">Вход</a>
                     </legend>
-                    <div class="alert alert-success">Вам выслано письмо</div>
+                    <div name="messages"></div>
                     <div class="pure-control-group">
                         <label for="name">Email</label>
-                        <input id="name" type="text" placeholder="Email">
+                        <input id="name" name="email" type="text" placeholder="Email">
                     </div>
 
                     <div class="pure-controls">
-                        <button type="submit" class="pure-button pure-button-primary">Восстановить</button>
+                        <button type="button" name="send" class="pure-button pure-button-primary">Восстановить</button>
                     </div>
                 </fieldset>
             </form>
@@ -151,7 +151,7 @@
     </script>
 
     <script type="text/template" id="alertbox-template">
-        <div class="alert alert-danger"><%= message %></div>
+        <div class="alert alert-<%=status%>"><%= message %></div>
     </script>
     <script src="vendors/require.js"></script>
     <script src="js/require.config.js"></script>
