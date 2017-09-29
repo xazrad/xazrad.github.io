@@ -2,13 +2,25 @@
  * Created by radik on 26.09.17.
  */
 
-define(['backbone','marionette', 'globals', 'md5'],
+define(['backbone',
+        'marionette',
+        'globals',
+        'md5',
+        'waitMe'],
     function (Backbone, Marionette, globals, md5) {
         const rootPath = globals.rootPath;
+
+        var optionsWaitMe = {
+            text: 'Загрузка...',
+            bg: 'rgba(255,255,255,0.90)',
+            color: '#555'
+        };
+
         var app = {};
 
         app.AuthSyncObj = Marionette.Object.extend({
             sync: function (urlPath, secretAuth) {
+                self = this;
                 var dummy = {
                     url: function () {
                         return rootPath + urlPath
@@ -23,7 +35,7 @@ define(['backbone','marionette', 'globals', 'md5'],
                 var self = this;
                 var options = {
                     success: function (model, resp, xhr) {
-                        console.log(model);
+                        self.getOption('view').$el.waitMe('hide');
                         if (!model.ok) {
                             var data = {};
                             data.status = 'danger';
@@ -57,6 +69,7 @@ define(['backbone','marionette', 'globals', 'md5'],
                         console.log('error');
                     },
                     beforeSend: function(xhr) {
+                        self.getOption('view').$el.waitMe(optionsWaitMe);
                         xhr.setRequestHeader("Authorization", "Basic " + secretAuth);
                     }
                 };
