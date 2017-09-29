@@ -18,7 +18,7 @@ define([
                 'signup': 'signup',
                 'reset-password': 'resetPassword',
                 'host/:id': 'hostDetail',
-                'host/add': 'hostDetail',
+                'hostAdd': 'hostAdd',
                 '*actions': 'other'
 
             },
@@ -33,6 +33,13 @@ define([
                 this.getOption('app').showView(new views.HostDetailView({
                     hostID: hostID
                 }) );
+            },
+            hostAdd: function () {
+                if (!localStorage.accessKey) {
+                    this.navigate('login', {trigger: true});
+                    return
+                }
+                this.getOption('app').showView(new views.HostAddView() );
             },
             index: function () {
                 if (!localStorage.accessKey) {

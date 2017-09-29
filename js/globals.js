@@ -21,7 +21,6 @@ define([
                 xhr.setRequestHeader("Authorization", "Basic " + secretAuth);
             };
             options.success = function (model, resp, xhr) {
-                // console.log(model);
                 var PrepareModel = model.result;
                 oldSucces(PrepareModel, resp, xhr)
             };
