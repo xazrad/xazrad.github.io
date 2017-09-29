@@ -18,8 +18,8 @@ define([
                 'signup': 'signup',
                 'reset-password': 'resetPassword',
                 'host/:id': 'hostDetail',
+                'host/add': 'hostDetail',
                 '*actions': 'other'
-
 
             },
             other: function () {

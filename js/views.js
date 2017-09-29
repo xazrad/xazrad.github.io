@@ -50,8 +50,8 @@ define([
 
             },
             enterAction: function () {
-                var email = this.getUI('email').val();
-                var password = this.getUI('password').val();
+                var email = this.getUI('email').val().trim();
+                var password = this.getUI('password').val().trim();
                 this.syncOb.login(email, password);
             }
         });
@@ -86,8 +86,8 @@ define([
 
             },
             enterAction: function () {
-                var email = this.getUI('email').val();
-                var password = this.getUI('password').val();
+                var email = this.getUI('email').val().trim();
+                var password = this.getUI('password').val().trim();
                 this.syncOb.signUp(email, password);
             }
 
@@ -123,7 +123,7 @@ define([
                 }, this);
             },
             enterAction: function () {
-                var email = this.getUI('email').val();
+                var email = this.getUI('email').val().trim();
                 this.syncOb.resetPassword(email, 'unused');
             }
         });
