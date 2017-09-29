@@ -12,7 +12,8 @@ require.config({
 		marionette: '../vendors/backbone.marionette.min',
         md5: '../vendors/md5.min',
         waitMe: '../vendors/waitme/waitMe.min',
-        sync: '../vendors/sync'
+        sync: '../vendors/sync',
+        moment: '../vendors/momentjs/moment-with-locales.min'
     },
 	shim: {
         underscore: {

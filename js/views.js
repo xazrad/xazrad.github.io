@@ -10,9 +10,12 @@ define([
         'authSync',
         'collections',
         'models',
+        'moment',
         'marionette'
     ],
-    function($, Backbone, _, authSync, collection, models) {
+    function($, Backbone, _, authSync, collection, models, moment) {
+        moment.locale('ru');
+
         var app = {};
 
         var AlertMessage = Backbone.Marionette.View.extend({
@@ -130,6 +133,9 @@ define([
 
         var HostView = Backbone.Marionette.View.extend({
             template: _.template($('#hostitem-template').html()),
+            templateContext: function () {
+                return {moment: moment}
+            }
         });
 
         var HostListView = Backbone.Marionette.CollectionView.extend({
@@ -163,6 +169,9 @@ define([
 
         app.HostDetailView = Backbone.Marionette.View.extend({
             template: _.template($('#hostdetailview-template').html()),
+            templateContext: function () {
+                return {moment: moment}
+            },
             modelEvents: {
                 'sync': 'render',
                 'request': function () {

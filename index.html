@@ -121,7 +121,7 @@
                 <tr>
                     <td>domain </td>
                     <% if (domain)  { %>
-                    <td><%= domain.experation_date %></td>
+                    <td><%= moment(domain.experation_date).format('LLL') %></td>
                     <%  }  else { %>
                     <td>нет информации</td>
                     <% } %>
@@ -132,7 +132,7 @@
                 </tr>
                 <tr>
                     <td>ssl </td>
-                    <td><%= http.ssl %></td>
+                    <td><%= moment(http.ssl).format('LLL') %></td>
                 </tr>
                 </tbody>
             </table>
@@ -161,7 +161,7 @@
                         <tr>
                             <td>domain </td>
                             <% if (domain)  { %>
-                            <td><%= domain.experation_date %></td>
+                            <td><%= moment(domain.experation_date).format('LLL') %></td>
                             <%  }  else { %>
                             <td>нет информации</td>
                             <% } %>
@@ -172,7 +172,7 @@
                         </tr>
                         <tr>
                             <td>ssl </td>
-                            <td><%= http.ssl %></td>
+                            <td><%= moment(http.ssl).format('LLL') %></td>
                         </tr>
                         </tbody>
                     </table>
@@ -201,7 +201,7 @@
                         <tbody>
                             <% for (item in checks) { %>
                                 <tr>
-                                    <td><%= checks[item].updated_date %></td>
+                                    <td><%= moment(checks[item].updated_date).format('LLL') %></td>
                                     <td><%= checks[item].ip %></td>
                                     <td><%= checks[item].elapsed %></td>
                                     <td><%= checks[item].status_code %></td>
