@@ -11,7 +11,8 @@ require.config({
 		underscore: '../vendors/underscore-min',
 		marionette: '../vendors/backbone.marionette.min',
         md5: '../vendors/md5.min',
-        waitMe: '../vendors/waitme/waitMe.min'
+        waitMe: '../vendors/waitme/waitMe.min',
+        sync: '../vendors/sync'
     },
 	shim: {
         underscore: {

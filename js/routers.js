@@ -29,7 +29,7 @@ define([
                     this.navigate('login', {trigger: true});
                     return
                 }
-                this.getOption('app').showView(new views.HostListView() );
+                this.getOption('app').showView(new views.IndexView() );
             },
             login: function () {
                 localStorage.removeItem('accessKey');

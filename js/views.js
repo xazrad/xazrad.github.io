@@ -8,9 +8,10 @@ define([
         'backbone',
         'underscore',
         'authSync',
+        'collections',
         'marionette'
     ],
-    function($, Backbone, _, authSync) {
+    function($, Backbone, _, authSync, collection) {
         var app = {};
 
         var AlertMessage = Backbone.Marionette.View.extend({
@@ -126,8 +127,38 @@ define([
             }
         });
 
-        app.HostListView = Backbone.Marionette.View.extend({
-            template: _.template($('#hostlist-template').html())
+
+        var HostView = Backbone.Marionette.View.extend({
+            template: _.template($('#hostitem-template').html()),
+        });
+
+        var HostListView = Backbone.Marionette.CollectionView.extend({
+            childView: HostView,
+            // emptyView: MyEmptyView
+            initialize: function () {
+                this.collection.fetch();
+            },
+            collectionEvents: {
+                'sync': function (data) {
+                    console.log(data.toJSON());
+                },
+                'request': function () {
+                    console.log('request');
+                }
+            }
+        });
+
+        app.IndexView = Backbone.Marionette.View.extend({
+            template: _.template($('#indexview-template').html()),
+            regions: {
+                hostList: 'div[name="host-list"]'
+            },
+            onRender: function () {
+                console.log('host list render');
+                this.showChildView('hostList', new HostListView({
+                    collection: new collection.HostCollection()
+                }) )
+            }
         });
 
         return app;

@@ -104,50 +104,49 @@
         </div>
     </script>
 
-    <script type="text/template" id="hostlist-template">
-        <div class="pure-g">
-            <div class="pure-u-1 relative">
-                <div class="card">
-                    <img src="https://s3-eu-west-1.amazonaws.com/chicago-api/hosts/https-lenta.ru443.ico">
-                    lenta.ru
-                    <table class="pure-table pure-table-horizontal">
-                        <tbody>
-                        <tr>
-                            <td>domain </td>
-                            <td>LENTA.RU</td>
-                        </tr>
-                        <tr>
-                            <td>срок аренды </td>
-                            <td>2016-01-01T23:59:59</td>
-                        </tr>
-                        <tr>
-                            <td>url </td>
-                            <td><a href="https://lenta.ru/" target="_blank">https://lenta.ru/</a></td>
-                        </tr>
-                        <tr>
-                            <td>ssl </td>
-                            <td>да</td>
-                        </tr>
-                        <tr>
-                            <td>ssl срок</td>
-                            <td>2017-01-01</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <div>
-                        <button class="pure-button pure-button-primary button-xsmall">Доп. информация</button>
-                    </div>
-                </div>
-                <div class="card">
-                    host 2
-                </div>
-                <div class="card">
-                    host 3
-                </div>
-
+    <script type="text/template" id="hostitem-template">
+        <div class="card">
+            <img src="<%- ico %>">
+            <%- name %>
+            <table class="pure-table pure-table-horizontal">
+                <tbody>
+                <tr>
+                    <td>domain </td>
+                    <% if (domain)  { %>
+                        <td><%= domain.name %></td>
+                    <%  }  else { %>
+                    <td>нет информации</td>
+                    <% } %>
+                </tr>
+                <tr>
+                    <td>domain </td>
+                    <% if (domain)  { %>
+                    <td><%= domain.experation_date %></td>
+                    <%  }  else { %>
+                    <td>нет информации</td>
+                    <% } %>
+                </tr>
+                <tr>
+                    <td>url </td>
+                    <td><a href="<%= http.url %>" target="_blank"><%= http.url %></a></td>
+                </tr>
+                <tr>
+                    <td>ssl </td>
+                    <td><%= http.ssl %></td>
+                </tr>
+                </tbody>
+            </table>
+            <div>
+                <a href="#host/<%= id %>" class="pure-button pure-button-primary button-xsmall">Доп. информация</a>
             </div>
         </div>
+    </script>
 
+    <script type="text/template" id="indexview-template">
+        <div class="pure-g">
+            <div class="pure-u-1 relative" name="host-list">
+            </div>
+        </div>
     </script>
 
     <script type="text/template" id="alertbox-template">
