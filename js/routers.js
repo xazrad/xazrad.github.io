@@ -17,12 +17,22 @@ define([
                 'login': 'login',
                 'signup': 'signup',
                 'reset-password': 'resetPassword',
+                'host/:id': 'hostDetail',
                 '*actions': 'other'
 
 
             },
             other: function () {
                 this.navigate('', true);
+            },
+            hostDetail: function (hostID) {
+                if (!localStorage.accessKey) {
+                    this.navigate('login', {trigger: true});
+                    return
+                }
+                this.getOption('app').showView(new views.HostDetailView({
+                    hostID: hostID
+                }) );
             },
             index: function () {
                 if (!localStorage.accessKey) {
@@ -41,9 +51,6 @@ define([
             resetPassword: function () {
                 this.getOption('app').showView(new views.ResetPasswordView() );
             }
-            // onRoute: function(name, path, args) {
-            //     console.log('User navigated to ' + name+' / '+path+ ' / '+args);
-            // }
         });
 
         return app;

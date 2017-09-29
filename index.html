@@ -142,6 +142,78 @@
         </div>
     </script>
 
+    <script type="text/template" id="hostdetailview-template">
+        <div class="pure-g">
+            <div class="pure-u-1 relative" name="host-list">
+                <div class="card">
+                    <img src="<%- ico %>">
+                    <%- name %>
+                    <table class="pure-table pure-table-horizontal">
+                        <tbody>
+                        <tr>
+                            <td>domain </td>
+                            <% if (domain)  { %>
+                            <td><%= domain.name %></td>
+                            <%  }  else { %>
+                            <td>нет информации</td>
+                            <% } %>
+                        </tr>
+                        <tr>
+                            <td>domain </td>
+                            <% if (domain)  { %>
+                            <td><%= domain.experation_date %></td>
+                            <%  }  else { %>
+                            <td>нет информации</td>
+                            <% } %>
+                        </tr>
+                        <tr>
+                            <td>url </td>
+                            <td><a href="<%= http.url %>" target="_blank"><%= http.url %></a></td>
+                        </tr>
+                        <tr>
+                            <td>ssl </td>
+                            <td><%= http.ssl %></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card">
+                    Hosting
+                    <table class="pure-table pure-table-horizontal">
+                        <tbody>
+                            <% for (item in hosting) { %>
+                                <tr>
+                                    <td><%= hosting[item].country.name %></td>
+                                    <td><img src="<%= hosting[item].country.ico %>"></td>
+                                    <td><%= hosting[item].description %></td>
+                                    <td><%= hosting[item].ip %></td>
+                                    <td><%= hosting[item].provider.name %></td>
+                                    <td><img src="<%= hosting[item].provider.ico %>"></td>
+                                    <td><%= hosting[item].provider.domain %></td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card">
+                    Checks
+                    <table class="pure-table pure-table-horizontal">
+                        <tbody>
+                            <% for (item in checks) { %>
+                                <tr>
+                                    <td><%= checks[item].updated_date %></td>
+                                    <td><%= checks[item].ip %></td>
+                                    <td><%= checks[item].elapsed %></td>
+                                    <td><%= checks[item].status_code %></td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </script>
+
     <script type="text/template" id="indexview-template">
         <div class="pure-g">
             <div class="pure-u-1 relative" name="host-list">

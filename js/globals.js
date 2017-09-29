@@ -3,10 +3,33 @@
  */
 
 define([
-    'backbone'
+    'backbone',
+        'sync'
     ],
-    function(Backbone) {
-        var oldSync = Backbone.sync;
+    function(Backbone, Sync) {
+        var rootPath = 'https://chicago.it-open.net/v1/';
+        var chicagoSync = Sync();
+        chicagoSync.addMiddleware(function(next, method, model, options) {
+            var oldSucces = options.success;
+            var secretAuth;
+            var username = localStorage.accessKey;
+            secretAuth = btoa(username + ":unused");
+
+            options.beforeSend = function(xhr) {
+                // self.getOption('view').$el.waitMe(optionsWaitMe);
+
+                xhr.setRequestHeader("Authorization", "Basic " + secretAuth);
+            };
+            options.success = function (model, resp, xhr) {
+                // console.log(model);
+                var PrepareModel = model.result;
+                oldSucces(PrepareModel, resp, xhr)
+            };
+
+            next(method, model, options);
+        });
+
+        // var oldSync = Backbone.sync;
 
         // Backbone.sync = function(method, model, options){
         //     options.beforeSend = function(xhr){
@@ -37,7 +60,8 @@ define([
         // };
 
         return {
-            rootPath: 'https://chicago.it-open.net/v1/'
+            rootPath: rootPath,
+            chicagoSync: chicagoSync
         }
 }
 );

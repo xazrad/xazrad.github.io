@@ -9,9 +9,10 @@ define([
         'underscore',
         'authSync',
         'collections',
+        'models',
         'marionette'
     ],
-    function($, Backbone, _, authSync, collection) {
+    function($, Backbone, _, authSync, collection, models) {
         var app = {};
 
         var AlertMessage = Backbone.Marionette.View.extend({
@@ -158,6 +159,23 @@ define([
                 this.showChildView('hostList', new HostListView({
                     collection: new collection.HostCollection()
                 }) )
+            }
+        });
+
+        app.HostDetailView = Backbone.Marionette.View.extend({
+            template: _.template($('#hostdetailview-template').html()),
+            modelEvents: {
+                'sync': 'render',
+                'request': function () {
+                    console.log('request yyyyy');
+                }
+            },
+            initialize: function (options) {
+                this.model = new models.HostModel({id: options.hostID});
+                this.model.fetch();
+            },
+            onRender: function () {
+              console.log(this.model.toJSON());
             }
         });
 
