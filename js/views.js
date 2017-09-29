@@ -175,7 +175,6 @@ define([
                 }
             },
             onRender: function () {
-                console.log('host list render');
                 this.showChildView('hostList', new HostListView({
                     collection: new collection.HostCollection()
                 }) )
@@ -188,17 +187,22 @@ define([
                 return {moment: moment}
             },
             modelEvents: {
-                'sync': 'render',
+                'change': 'render',
+                'sync': function () {
+                    console.log('end request');
+                    this.$el.waitMe('hide');
+                },
                 'request': function () {
-                    console.log('request yyyyy');
+                    console.log('start request');
+                    this.$el.waitMe(optionsWaitMe);
                 }
             },
             initialize: function (options) {
                 this.model = new models.HostModel({id: options.hostID});
-                this.model.fetch();
             },
-            onRender: function () {
-              console.log(this.model.toJSON());
+            onBeforeAttach: function () {
+                console.log('attached');
+                this.model.fetch();
             }
         });
 
