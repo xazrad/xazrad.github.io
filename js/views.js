@@ -7,10 +7,10 @@ define([
         'jquery',
         'backbone',
         'underscore',
-        'md5',
+        'authSync',
         'marionette'
     ],
-    function($, Backbone, _, md5) {
+    function($, Backbone, _, authSync) {
         var app = {};
 
         var AlertMessage = Backbone.Marionette.View.extend({
@@ -33,80 +33,63 @@ define([
             regions: {
                 alert: 'div[name="messages"]'
             },
-            showAlert: function (data) {
-                this.showChildView('alert', new AlertMessage({data: data}));
+            initialize: function () {
+                this.syncOb = new authSync.AuthSyncObj({
+                    view: this
+                });
+                this.listenTo(this.syncOb, 'alert', function (data) {
+                    this.showChildView('alert', new AlertMessage({data: data}));
+                }, this);
+
+                this.listenTo(this.syncOb, 'success', function (data) {
+                    localStorage.accessKey = data;
+                    Backbone.history.navigate('', {trigger: true});
+                }, this);
+
             },
             enterAction: function () {
                 var email = this.getUI('email').val();
                 var password = this.getUI('password').val();
-                if (!email || !password) {
-                    var data = {};
-                    data.status = 'danger';
-                    data.message = 'Не все поля заполнены';
-                    this.showAlert(data);
-                    return
-                }
-
-                var secretAuth;
-                try {
-                    secretAuth = btoa(email + ":" + md5(password));
-                } catch (err) {
-                    data = {};
-                    data.status = 'danger';
-                    data.message = 'Некорретные символы';
-                    this.showAlert(data);
-                    return
-                }
-                var dummy = {
-                    url: function () {
-                        return 'https://chicago.it-open.net/v1/auth/signin/'
-                    },
-                    trigger: function () {
-
-                    },
-                    toJSON: function () {
-                        return {"describe": "WEBApp"};
-                    }
-                };
-                var self = this;
-                var options = {
-                    success: function (model, resp, xhr) {
-                        if (!model.ok) {
-                            var codeError = model.error.code;
-                            if (codeError == 427 || codeError == 428) {
-                                var data = {};
-                                data.status = 'danger';
-                                data.message = 'Неверные данные';
-                                self.showAlert(data);
-                                return;
-                            }
-                            if (codeError == 429) {
-                                var data = {};
-                                data.status = 'danger';
-                                data.message = 'Вы не подтвердили email';
-                                self.showAlert(data);
-                                return;
-                            }
-                        } else {
-                            var accessKey = model.result;
-                            localStorage.accessKey = accessKey;
-                            Backbone.history.navigate('', {trigger: true});
-                        }
-                    },
-                    error: function () {
-                        console.log('error');
-                    },
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader("Authorization", "Basic " + secretAuth);
-                    }
-                };
-
-                Backbone.sync("create", dummy, options);
+                this.syncOb.login(email, password);
             }
         });
 
         app.SignUpView = Backbone.Marionette.View.extend({
-            template: _.template($('#signup-template').html())
+            template: _.template($('#signup-template').html()),
+            ui: {
+                email: 'input[name="email"]',
+                password: 'input[name="password"]',
+                btEnter: 'button[name="send"]'
+            },
+            events: {
+                'click @ui.btEnter': 'enterAction'
+            },
+            regions: {
+                alert: 'div[name="messages"]'
+            },
+            initialize: function () {
+                this.syncOb = new authSync.AuthSyncObj({
+                    view: this
+                });
+                this.listenTo(this.syncOb, 'alert', function (data) {
+                    this.showChildView('alert', new AlertMessage({data: data}));
+                }, this);
+
+                this.listenTo(this.syncOb, 'success', function (data) {
+                    var data = {};
+                    data.status = 'success';
+                    data.message = 'Дополнительная информация вам выслана на email';
+                    this.showChildView('alert', new AlertMessage({data: data}));
+                }, this);
+
+            },
+            enterAction: function () {
+                var email = this.getUI('email').val();
+                var password = this.getUI('password').val();
+                this.syncOb.signUp(email, password);
+            }
+
+
         });
 
         app.ResetPasswordView = Backbone.Marionette.View.extend({
@@ -121,85 +104,25 @@ define([
             regions: {
                 alert: 'div[name="messages"]'
             },
-            showAlert: function (data) {
-                this.showChildView('alert', new AlertMessage({data: data}));
+            initialize: function () {
+                this.syncOb = new authSync.AuthSyncObj({
+                    view: this
+                });
+
+                this.listenTo(this.syncOb, 'alert', function (data) {
+                    this.showChildView('alert', new AlertMessage({data: data}));
+                }, this);
+
+                this.listenTo(this.syncOb, 'success', function (data) {
+                    var data = {};
+                    data.status = 'success';
+                    data.message = 'Информация по восстановлению выслана вам на email';
+                    this.showChildView('alert', new AlertMessage({data: data}));
+                }, this);
             },
             enterAction: function () {
                 var email = this.getUI('email').val();
-                if (!email) {
-                    var data = {};
-                    data.status = 'danger';
-                    data.message = 'Поле не заполнено';
-                    this.showAlert(data);
-                    return
-                }
-                var secretAuth;
-                try {
-                    secretAuth = btoa(email + ":unused");
-                } catch (err) {
-                    data = {};
-                    data.status = 'danger';
-                    data.message = 'Некорретные символы';
-                    this.showAlert(data);
-                    return
-                }
-                var dummy = {
-                    url: function () {
-                        return 'https://chicago.it-open.net/v1/auth/reset/'
-                    },
-                    trigger: function () {
-
-                    },
-                    toJSON: function () {
-                    }
-                };
-                var self = this;
-                var options = {
-                    success: function (model, resp, xhr) {
-                        console.log(model);
-                        console.log(resp);
-                        console.log(xhr);
-                        if (!model.ok) {
-                            var codeError = model.error.code;
-                            if (codeError == 425) {
-                                var data = {};
-                                data.status = 'danger';
-                                data.message = 'Неверный формат email';
-                                self.showAlert(data);
-                                return;
-                            }
-                            if (codeError == 427) {
-                                var data = {};
-                                data.status = 'danger';
-                                data.message = 'Email не найден';
-                                self.showAlert(data);
-                                return;
-                            }
-                            if (codeError == 429) {
-                                var data = {};
-                                data.status = 'danger';
-                                data.message = 'Вы не подтвердили email';
-                                self.showAlert(data);
-                                return;
-                            }
-                        } else {
-                            var data = {};
-                            data.status = 'success';
-                            data.message = 'Информация по восстановлению выслана вам на email';
-                            self.showAlert(data);
-
-                        }
-                    },
-                    error: function () {
-                        console.log('error');
-                    },
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader("Authorization", "Basic " + secretAuth);
-                    }
-                };
-
-                Backbone.sync("create", dummy, options);
-
+                this.syncOb.resetPassword(email, 'unused');
             }
         });
 

@@ -10,7 +10,8 @@ require.config({
 		'backbone.radio': '../vendors/backbone.radio.min',
 		underscore: '../vendors/underscore-min',
 		marionette: '../vendors/backbone.marionette.min',
-        md5: '../vendors/md5.min'
+        md5: '../vendors/md5.min',
+        waitMe: '../vendors/waitme/waitMe.min'
     },
 	shim: {
         underscore: {
@@ -23,6 +24,7 @@ require.config({
         marionette:{
             deps:['underscore', 'backbone', 'jquery'],
             exports: 'Marionette'
-        }
+        },
+        waitMe: ['jquery']
     }
 });

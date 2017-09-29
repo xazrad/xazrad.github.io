@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Chicago Online</title>
-
+    <link rel="stylesheet" href="vendors/waitme/waitMe.css" rel="stylesheet" />
     <link rel="stylesheet" href="vendors/purecss/pure-min.css">
     <link rel="stylesheet" href="css/custom.css">
 </head>
@@ -55,19 +55,19 @@
                         <legend class="relative">Регистрация
                             <a href="#login" class="right">Вход</a>
                         </legend>
-                        <div class="alert alert-success">Вам выслано письмо. Подтвердите Email.</div>
+                        <div name="messages"></div>
                         <div class="pure-control-group">
                             <label for="name">Email</label>
-                            <input id="name" type="text" placeholder="Email">
+                            <input id="name" name="email" type="text" placeholder="Email">
                         </div>
 
                         <div class="pure-control-group">
                             <label for="password">Пароль</label>
-                            <input id="password" type="password" placeholder="Пароль">
+                            <input id="password" name="password" type="password" placeholder="Пароль">
                         </div>
 
                         <div class="pure-controls">
-                            <button type="submit" class="pure-button pure-button-primary">Зарегистрироваться</button>
+                            <button type="button" name="send" class="pure-button pure-button-primary">Зарегистрироваться</button>
                         </div>
                     </fieldset>
                 </form>

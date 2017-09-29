@@ -2,13 +2,134 @@
  * Created by radik on 26.09.17.
  */
 
-define(['backbone', 'marionette'],
-    function (Backbone) {
+define(['backbone',
+        'marionette',
+        'globals',
+        'md5',
+        'waitMe'],
+    function (Backbone, Marionette, globals, md5) {
+        const rootPath = globals.rootPath;
+
+        var optionsWaitMe = {
+            text: 'Загрузка...',
+            bg: 'rgba(255,255,255,0.90)',
+            color: '#555'
+        };
+
         var app = {};
 
-        app.AuthSyncObj = Backbone.Collection.extend({
-            url: 'https://chicago.it-open.net/v1/host/',
-            model: Backbone.Model
+        app.AuthSyncObj = Marionette.Object.extend({
+            sync: function (urlPath, secretAuth) {
+                self = this;
+                var dummy = {
+                    url: function () {
+                        return rootPath + urlPath
+                    },
+                    trigger: function () {
+
+                    },
+                    toJSON: function () {
+                        // return {"describe": "WEBApp"};
+                    }
+                };
+                var self = this;
+                var options = {
+                    success: function (model, resp, xhr) {
+                        self.getOption('view').$el.waitMe('hide');
+                        if (!model.ok) {
+                            var data = {};
+                            data.status = 'danger';
+
+                            var codeError = model.error.code;
+                            if (codeError == 425) {
+                                data.message = 'Неверный формат email';
+                                self.triggerMethod('alert', data);
+                                return;
+                            }
+                            if (codeError == 426) {
+                                data.message = 'Email уже используется';
+                                self.triggerMethod('alert', data);
+                                return;
+                            }
+                            if (codeError == 427 || codeError == 428) {
+                                data.message = 'Email не найден';
+                                self.triggerMethod('alert', data);
+                                return;
+                            }
+                            if (codeError == 429) {
+                                data.message = 'Вы не подтвердили email';
+                                self.triggerMethod('alert', data);
+                                return;
+                            }
+                        } else {
+                            self.triggerMethod('success', model.result);
+                        }
+                    },
+                    error: function () {
+                        console.log('error');
+                    },
+                    beforeSend: function(xhr) {
+                        self.getOption('view').$el.waitMe(optionsWaitMe);
+                        xhr.setRequestHeader("Authorization", "Basic " + secretAuth);
+                    }
+                };
+                Backbone.sync("create", dummy, options);
+            },
+            getAuthBasic: function (username, password) {
+                var secretAuth;
+                try {
+                    secretAuth = btoa(username + ":" + md5(password));
+                } catch (err) {
+                    data = {};
+                    data.status = 'danger';
+                    data.message = 'Некорретные символы';
+                    this.triggerMethod('alert', data);
+                }
+                return secretAuth;
+            },
+            resetPassword: function (email, password) {
+                if (!email) {
+                    var data = {};
+                    data.status = 'danger';
+                    data.message = 'Поле не заполнено';
+                    this.triggerMethod('alert', data);
+                    return
+                }
+                var authBasic = this.getAuthBasic(email, password);
+                if (!authBasic) {
+                    return
+                }
+                this.sync('auth/reset', authBasic);
+
+            },
+            login: function (email, password) {
+                if (!email || !password) {
+                    var data = {};
+                    data.status = 'danger';
+                    data.message = 'Не все поля заполнены';
+                    this.triggerMethod('alert', data);
+                    return
+                }
+                var authBasic = this.getAuthBasic(email, password);
+                if (!authBasic) {
+                    return
+                }
+                this.sync('auth/signin/', authBasic);
+            },
+            signUp: function (email, password) {
+                if (!email || !password) {
+                    var data = {};
+                    data.status = 'danger';
+                    data.message = 'Не все поля заполнены';
+                    this.triggerMethod('alert', data);
+                    return
+                }
+                var authBasic = this.getAuthBasic(email, password);
+                if (!authBasic) {
+                    return
+                }
+                this.sync('auth/signup/', authBasic);
+            }
         });
 
         return app
