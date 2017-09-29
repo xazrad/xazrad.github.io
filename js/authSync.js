@@ -8,7 +8,85 @@ define(['backbone','marionette', 'globals', 'md5'],
         var app = {};
 
         app.AuthSyncObj = Marionette.Object.extend({
-            resetPassword: function (email) {
+            sync: function (urlPath, secretAuth) {
+                var dummy = {
+                    url: function () {
+                        return rootPath + urlPath
+                    },
+                    trigger: function () {
+
+                    },
+                    toJSON: function () {
+                        // return {"describe": "WEBApp"};
+                    }
+                };
+                var self = this;
+                var options = {
+                    success: function (model, resp, xhr) {
+                        console.log(model);
+                        if (!model.ok) {
+                            var data = {};
+                            data.status = 'danger';
+
+                            var codeError = model.error.code;
+                            if (codeError == 425) {
+                                data.message = 'Неверный формат email';
+                                self.triggerMethod('alert', data);
+                                return;
+                            }
+                            if (codeError == 426) {
+                                data.message = 'Email уже используется';
+                                self.triggerMethod('alert', data);
+                                return;
+                            }
+                            if (codeError == 427 || codeError == 428) {
+                                data.message = 'Email не найден';
+                                self.triggerMethod('alert', data);
+                                return;
+                            }
+                            if (codeError == 429) {
+                                data.message = 'Вы не подтвердили email';
+                                self.triggerMethod('alert', data);
+                                return;
+                            }
+                        } else {
+                            self.triggerMethod('success', model.result);
+                        }
+                    },
+                    error: function () {
+                        console.log('error');
+                    },
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("Authorization", "Basic " + secretAuth);
+                    }
+                };
+                Backbone.sync("create", dummy, options);
+            },
+            getAuthBasic: function (username, password) {
+                var secretAuth;
+                try {
+                    secretAuth = btoa(username + ":" + md5(password));
+                } catch (err) {
+                    data = {};
+                    data.status = 'danger';
+                    data.message = 'Некорретные символы';
+                    this.triggerMethod('alert', data);
+                }
+                return secretAuth;
+            },
+            resetPassword: function (email, password) {
+                if (!email) {
+                    var data = {};
+                    data.status = 'danger';
+                    data.message = 'Поле не заполнено';
+                    this.triggerMethod('alert', data);
+                    return
+                }
+                var authBasic = this.getAuthBasic(email, password);
+                if (!authBasic) {
+                    return
+                }
+                this.sync('auth/reset', authBasic);
 
             },
             login: function (email, password) {
@@ -19,63 +97,25 @@ define(['backbone','marionette', 'globals', 'md5'],
                     this.triggerMethod('alert', data);
                     return
                 }
-                var secretAuth;
-                try {
-                    secretAuth = btoa(email + ":" + md5(password));
-                } catch (err) {
-                    data = {};
+                var authBasic = this.getAuthBasic(email, password);
+                if (!authBasic) {
+                    return
+                }
+                this.sync('auth/signin/', authBasic);
+            },
+            signUp: function (email, password) {
+                if (!email || !password) {
+                    var data = {};
                     data.status = 'danger';
-                    data.message = 'Некорретные символы';
+                    data.message = 'Не все поля заполнены';
                     this.triggerMethod('alert', data);
                     return
                 }
-                var dummy = {
-                    url: function () {
-                        return rootPath + 'auth/signin/'
-                    },
-                    trigger: function () {
-
-                    },
-                    toJSON: function () {
-                        return {"describe": "WEBApp"};
-                    }
-                };
-                var self = this;
-                var options = {
-                    success: function (model, resp, xhr) {
-                        if (!model.ok) {
-                            var codeError = model.error.code;
-                            if (codeError == 427 || codeError == 428) {
-                                var data = {};
-                                data.status = 'danger';
-                                data.message = 'Неверные данные';
-                                self.triggerMethod('alert', data);
-                                return;
-                            }
-                            if (codeError == 429) {
-                                var data = {};
-                                data.status = 'danger';
-                                data.message = 'Вы не подтвердили email';
-                                self.triggerMethod('alert', data);
-                                return;
-                            }
-                        } else {
-                            var accessKey = model.result;
-                            localStorage.accessKey = accessKey;
-                            Backbone.history.navigate('', {trigger: true});
-                        }
-                    },
-                    error: function () {
-                        console.log('error');
-                    },
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader("Authorization", "Basic " + secretAuth);
-                    }
-                };
-
-                Backbone.sync("create", dummy, options);
-
-
+                var authBasic = this.getAuthBasic(email, password);
+                if (!authBasic) {
+                    return
+                }
+                this.sync('auth/signup/', authBasic);
             }
         });
 
