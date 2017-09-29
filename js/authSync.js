@@ -8,6 +8,9 @@ define(['backbone','marionette', 'globals', 'md5'],
         var app = {};
 
         app.AuthSyncObj = Marionette.Object.extend({
+            resetPassword: function (email) {
+
+            },
             login: function (email, password) {
                 if (!email || !password) {
                     var data = {};
@@ -28,7 +31,7 @@ define(['backbone','marionette', 'globals', 'md5'],
                 }
                 var dummy = {
                     url: function () {
-                        return rootPath + 'signin/'
+                        return rootPath + 'auth/signin/'
                     },
                     trigger: function () {
 
