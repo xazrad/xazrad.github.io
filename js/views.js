@@ -11,10 +11,17 @@ define([
         'collections',
         'models',
         'moment',
+        'waitMe',
         'marionette'
     ],
     function($, Backbone, _, authSync, collection, models, moment) {
         moment.locale('ru');
+
+        var optionsWaitMe = {
+            text: 'Загрузка...',
+            bg: 'rgba(255,255,255,0.90)',
+            color: '#555'
+        };
 
         var app = {};
 
@@ -140,17 +147,17 @@ define([
 
         var HostListView = Backbone.Marionette.CollectionView.extend({
             childView: HostView,
-            // emptyView: MyEmptyView
-            initialize: function () {
-                this.collection.fetch();
-            },
             collectionEvents: {
                 'sync': function (data) {
-                    console.log(data.toJSON());
+                    this.triggerMethod('end:request');
                 },
                 'request': function () {
-                    console.log('request');
+                    this.triggerMethod('start:request');
                 }
+            },
+            onRender: function () {
+                console.log('render');
+                this.collection.fetch();
             }
         });
 
@@ -158,6 +165,14 @@ define([
             template: _.template($('#indexview-template').html()),
             regions: {
                 hostList: 'div[name="host-list"]'
+            },
+            childViewEvents: {
+                'start:request': function () {
+                    this.$el.waitMe(optionsWaitMe);
+                },
+                'end:request': function () {
+                    this.$el.waitMe('hide');
+                }
             },
             onRender: function () {
                 console.log('host list render');
