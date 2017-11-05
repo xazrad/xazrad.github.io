@@ -1,22 +1,19 @@
-require([
-    'jquery',
-    'backbone',
-    'marionette',
-    'underscore',
-    'collections',
-    'views',
-    'routers',
-    // 'globals'
-],
-function($, Backbone, Marionette, _, collections, views, routers) {
 
-    var App = Backbone.Marionette.Application.extend({
+
+require([
+    'marionette',
+    'routers',
+    'views'
+    ],
+function (Marionette, routers, views) {
+    var App = Marionette.Application.extend({
         region: 'body',
         onBeforeStart: function(app, options) {
         },
-        onStart: function(app, options) {
+        onStart: function(_app, options) {
+            var rootView = new views.RootView();
             var router = new routers.MainRouter({
-                app: this
+                rootView: rootView
             });
             Backbone.history.start();
         }

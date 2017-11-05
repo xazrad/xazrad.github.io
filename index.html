@@ -1,255 +1,146 @@
-<!doctype html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Chicago Online</title>
-    <link rel="stylesheet" href="vendors/waitme/waitMe.css" rel="stylesheet" />
-    <link rel="stylesheet" href="vendors/purecss/pure-min.css">
-    <link rel="stylesheet" href="css/custom.css">
-</head>
-
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <!--[if IE]>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <![endif]-->
+        <title>Chicago Online</title>
+        <link href="vendors/bootstrap/css/bootstrap.css" rel="stylesheet" />
+        <link href="vendors/font-awesome/font-awesome.css" rel="stylesheet" />
+        <link href="vendors/pacejs/pace-theme-flash.css" rel="stylesheet" />
+        <link href="css/style.css" rel="stylesheet" />
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    </head>
     <body>
+        <div class="navbar navbar-inverse set-radius-zero" >
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">
+                        <img src="img/logo.png" />
+                    </a>
+                </div>
+                <!--<div class="right-div">-->
+                    <!--<a href="#" class="btn btn-info pull-right">Выйти</a>-->
+                <!--</div>-->
+            </div>
+        </div>
+        <!-- LOGO HEADER END-->
+        <section class="menu-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- навигация -->
+                        <div class="navbar-collapse collapse " name="navbar"></div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <!-- MENU SECTION END-->
+        <div class="content-wrapper">
+            <div class="container" name="container"></div>
+        </div>
+        <!-- CONTENT-WRAPPER SECTION END-->
+        <section class="footer-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        &copy; 2018 Chicago Online
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script type="text/template" id="navbar-auth-tmpl">
+            <li><a href="#/login">Войти</a></li>
+            <li><a href="#/signup">Зарегистрироваться</a></li>
+            <li><a href="#/reset-password">Востановить пароль</a></li>
+        </script>
+        <script type="text/template" id="login-tmpl">
+            <div class="row pad-botm">
+                <div class="col-md-12">
+                    <h4 class="header-line">Войти</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-info">
+                        <div class="panel-body">
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input class="form-control" name="email" type="email" required/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Пароль</label>
+                                    <input class="form-control" name="password" type="password" required/>
+                                </div>
+                                <button type="button" class="btn btn-info">Войти </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </script>
+        <script type="text/template" id="signup-tml">
+            <div class="row pad-botm">
+                <div class="col-md-12">
+                    <h4 class="header-line">Зарегистрироваться</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-info">
+                        <div class="panel-body">
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input class="form-control" name="email" type="email" required/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Пароль</label>
+                                    <input class="form-control" name="password" type="password" required/>
+                                </div>
+                                <button type="button" class="btn btn-info">Зарегистрироваться </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </script>
+        <script type="text/template" id="reset-password-tml">
+            <div class="row pad-botm">
+                <div class="col-md-12">
+                    <h4 class="header-line">Восстановление пароля</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-info">
+                        <div class="panel-body">
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input class="form-control" name="email" type="email" required/>
+                                </div>
+                                <button type="button" class="btn btn-info">Востановить </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </script>
+        <script src="vendors/require.js"></script>
+        <script src="js/require.config.js"></script>
+        <script src="js/app.js"></script>
     </body>
-    <script type="text/template" id="login-template">
-        <div class="pure-g">
-            <div class="pure-u-1">
-                <form class="pure-form pure-form-aligned login">
-                    <fieldset>
-                        <legend class="relative">Вход
-                            <a href="#signup" class="right">Регистрация</a>
-                        </legend>
-                        <div name="messages"></div>
-                        <div class="pure-control-group">
-                            <label for="name">Email</label>
-                            <input id="name" name="email" type="text" placeholder="Email">
-                        </div>
-
-                        <div class="pure-control-group">
-                            <label for="password">Пароль</label>
-                            <input id="password" name="password" type="password" placeholder="Пароль">
-                        </div>
-
-                        <div class="pure-controls">
-                            <button type="button" name="send" class="pure-button pure-button-primary">Войти</button>
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
-        </div>
-        <div class="pure-g">
-            <div class="pure-u-1">
-                <div class="login">
-                    <a href="#reset-password" class="">Восстановить пароль</a>
-                </div>
-            </div>
-        </div>
-    </script>
-
-    <script type="text/template" id="signup-template">
-        <div class="pure-g">
-            <div class="pure-u-1">
-                <form class="pure-form pure-form-aligned login">
-                    <fieldset>
-                        <legend class="relative">Регистрация
-                            <a href="#login" class="right">Вход</a>
-                        </legend>
-                        <div name="messages"></div>
-                        <div class="pure-control-group">
-                            <label for="name">Email</label>
-                            <input id="name" name="email" type="text" placeholder="Email">
-                        </div>
-
-                        <div class="pure-control-group">
-                            <label for="password">Пароль</label>
-                            <input id="password" name="password" type="password" placeholder="Пароль">
-                        </div>
-
-                        <div class="pure-controls">
-                            <button type="button" name="send" class="pure-button pure-button-primary">Зарегистрироваться</button>
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
-        </div>
-        <div class="pure-g">
-            <div class="pure-u-1">
-                <div class="login">
-                    <a href="#reset-password" >Восстановить пароль</a>
-                </div>
-            </div>
-        </div>
-
-    </script>
-
-    <script type="text/template" id="reset-password-template">
-        <div class="pure-u-1">
-            <form class="pure-form pure-form-aligned login">
-                <fieldset>
-                    <legend class="relative">Восстановление пароля
-                        <a href="#login" class="right">Вход</a>
-                    </legend>
-                    <div name="messages"></div>
-                    <div class="pure-control-group">
-                        <label for="name">Email</label>
-                        <input id="name" name="email" type="text" placeholder="Email">
-                    </div>
-
-                    <div class="pure-controls">
-                        <button type="button" name="send" class="pure-button pure-button-primary">Восстановить</button>
-                    </div>
-                </fieldset>
-            </form>
-        </div>
-    </script>
-
-    <script type="text/template" id="hostitem-template">
-        <div class="card">
-            <img src="<%- ico %>">
-            <%- name %>
-            <table class="pure-table pure-table-horizontal">
-                <tbody>
-                <tr>
-                    <td>domain </td>
-                    <% if (domain)  { %>
-                        <td><%= domain.name %></td>
-                    <%  }  else { %>
-                    <td>нет информации</td>
-                    <% } %>
-                </tr>
-                <tr>
-                    <td>domain </td>
-                    <% if (domain)  { %>
-                    <td><%= moment(domain.experation_date).format('LLL') %></td>
-                    <%  }  else { %>
-                    <td>нет информации</td>
-                    <% } %>
-                </tr>
-                <tr>
-                    <td>url </td>
-                    <td><a href="<%= http.url %>" target="_blank"><%= http.url %></a></td>
-                </tr>
-                <tr>
-                    <td>ssl </td>
-                    <td><%= moment(http.ssl).format('LLL') %></td>
-                </tr>
-                </tbody>
-            </table>
-            <div>
-                <a href="#host/<%= id %>" class="pure-button pure-button-primary button-xsmall">Доп. информация</a>
-            </div>
-        </div>
-    </script>
-
-    <script type="text/template" id="hostdetailview-template">
-        <div class="pure-g">
-            <div class="pure-u-1 relative" name="host-list">
-                <div class="card">
-                    <img src="<%- ico %>">
-                    <%- name %>
-                    <table class="pure-table pure-table-horizontal">
-                        <tbody>
-                        <tr>
-                            <td>domain </td>
-                            <% if (domain)  { %>
-                            <td><%= domain.name %></td>
-                            <%  }  else { %>
-                            <td>нет информации</td>
-                            <% } %>
-                        </tr>
-                        <tr>
-                            <td>domain </td>
-                            <% if (domain)  { %>
-                            <td><%= moment(domain.experation_date).format('LLL') %></td>
-                            <%  }  else { %>
-                            <td>нет информации</td>
-                            <% } %>
-                        </tr>
-                        <tr>
-                            <td>url </td>
-                            <td><a href="<%= http.url %>" target="_blank"><%= http.url %></a></td>
-                        </tr>
-                        <tr>
-                            <td>ssl </td>
-                            <td><%= moment(http.ssl).format('LLL') %></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card">
-                    Hosting
-                    <table class="pure-table pure-table-horizontal">
-                        <tbody>
-                            <% for (item in hosting) { %>
-                                <tr>
-                                    <td><%= hosting[item].country.name %></td>
-                                    <td><img src="<%= hosting[item].country.ico %>"></td>
-                                    <td><%= hosting[item].description %></td>
-                                    <td><%= hosting[item].ip %></td>
-                                    <td><%= hosting[item].provider.name %></td>
-                                    <td><img src="<%= hosting[item].provider.ico %>"></td>
-                                    <td><%= hosting[item].provider.domain %></td>
-                                </tr>
-                            <% } %>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card">
-                    Checks
-                    <table class="pure-table pure-table-horizontal">
-                        <tbody>
-                            <% for (item in checks) { %>
-                                <tr>
-                                    <td><%= moment(checks[item].updated_date).format('LLL') %></td>
-                                    <td><%= checks[item].ip %></td>
-                                    <td><%= checks[item].elapsed %></td>
-                                    <td><%= checks[item].status_code %></td>
-                                </tr>
-                            <% } %>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </script>
-
-    <script type="text/template" id="indexview-template">
-        <div class="pure-g">
-            <div class="pure-u-1 relative">
-                <a href="#hostAdd" type="button" name="send" class="pure-button pure-button-primary">Добавить хост</a>
-            </div>
-        </div>
-        <div class="pure-g">
-            <div class="pure-u-1 relative" name="host-list">
-            </div>
-        </div>
-    </script>
-
-    <script type="text/template" id="hostaddview-template">
-        <div class="pure-u-1">
-            <form class="pure-form pure-form-aligned login">
-                <fieldset>
-                    <legend class="relative">Добавление хоста
-                    </legend>
-                    <div name="messages"></div>
-                    <div class="pure-control-group">
-                        <label for="host">Host</label>
-                        <input id="host" name="host" type="text" placeholder="example.com">
-                    </div>
-
-                    <div class="pure-controls">
-                        <button type="button" name="send" class="pure-button pure-button-primary">Добавить</button>
-                    </div>
-                </fieldset>
-            </form>
-        </div>
-    </script>
-
-    <script type="text/template" id="alertbox-template">
-        <div class="alert alert-<%=status%>"><%= message %></div>
-    </script>
-    <script src="vendors/require.js"></script>
-    <script src="js/require.config.js"></script>
-    <script src="js/app.js"></script>
 </html>

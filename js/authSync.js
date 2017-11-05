@@ -5,16 +5,10 @@
 define(['backbone',
         'marionette',
         'globals',
-        'md5',
-        'waitMe'],
+        'md5'
+],
     function (Backbone, Marionette, globals, md5) {
         const rootPath = globals.rootPath;
-
-        var optionsWaitMe = {
-            text: 'Загрузка...',
-            bg: 'rgba(255,255,255,0.90)',
-            color: '#555'
-        };
 
         var app = {};
 
@@ -35,7 +29,6 @@ define(['backbone',
                 var self = this;
                 var options = {
                     success: function (model, resp, xhr) {
-                        self.getOption('view').$el.waitMe('hide');
                         if (!model.ok) {
                             var data = {};
                             data.status = 'danger';
@@ -69,7 +62,6 @@ define(['backbone',
                         console.log('error');
                     },
                     beforeSend: function(xhr) {
-                        self.getOption('view').$el.waitMe(optionsWaitMe);
                         xhr.setRequestHeader("Authorization", "Basic " + secretAuth);
                     }
                 };
