@@ -2,11 +2,14 @@
  * Created by radik on 05.11.17.
  */
 define([
-    'pace',
+    'pace'
     ],
     function (pace) {
         pace.start({
-            restartOnRequestAfter: true
+            ajax: {
+                trackMethods: ['GET', 'POST']
+            }
+            // restartOnRequestAfter: false
         });
 
     return {};

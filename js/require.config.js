@@ -16,7 +16,8 @@ require.config({
         bootstrap: '../vendors/bootstrap/js/bootstrap',
         pace: '../vendors/pacejs/pace.min',
         'jquery.validate': '../vendors/jquery.validate/jquery.validate',
-        'jquery.validate.localization': '../vendors/jquery.validate/localization/messages_ru'
+        'jquery.validate.localization': '../vendors/jquery.validate/localization/messages_ru',
+        'jquery-serializejson': '../vendors/jquery-serializejson/jquery.serializejson.min'
 
     },
     deps: ['start'],
@@ -33,6 +34,7 @@ require.config({
             exports: 'Marionette'
         },
         bootstrap: ['jquery'],
+        'jquery-serializejson': ['jquery'],
         'jquery.validate.localization': ['jquery.validate'],
         start: [
             'bootstrap',

@@ -1,7 +1,6 @@
-var app = app || {};
-
-$(function () {
-    'use strict';
+define([
+    'sync'
+], function (Sync) {
     var rootPath = 'https://chicago.it-open.net/v1/';
 
     var chicagoSync = Sync();

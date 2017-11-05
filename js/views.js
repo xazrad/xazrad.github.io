@@ -5,9 +5,11 @@ define([
     'underscore',
     'backbone',
     'marionette',
-    'validate.options'
+    'authSync',
+    'validate.options',
+    'jquery-serializejson'
     ],
-function ($, _, Backnone, Marionette, validateOptions) {
+function ($, _, Backnone, Marionette, authSync, validateOptions) {
     var app = {};
 
     var NavBarView = Marionette.View.extend({
@@ -53,8 +55,30 @@ function ($, _, Backnone, Marionette, validateOptions) {
         events: {
             'click button': 'submit'
         },
+        ui: {
+            heading: '.panel-heading',
+            panel: '.panel'
+        },
+        initialize: function () {
+            this.syncOb = new authSync.AuthSyncObj({view: this});
+            this.listenTo(this.syncOb, 'alert', function (data) {
+                this.getUI('panel').removeClass('panel-info');
+                this.getUI('panel').addClass('panel-danger');
+                this.getUI('heading').html(data.message);
+            }, this);
+
+            this.listenTo(this.syncOb, 'success', function (data) {
+                this.getUI('panel').removeClass('panel-danger');
+                this.getUI('panel').addClass('panel-info');
+                this.getUI('heading').html('Информация по восстановлению выслана вам на email');
+            }, this);
+        },
         submit: function () {
-            this.$('form').valid();
+            if (!this.$('form').valid()) {
+                return;
+            }
+            var data = this.$('form').serializeJSON();
+            this.syncOb.resetPassword(data);
         },
         onRender: function () {
             this.$('form').validate(validateOptions);
