@@ -29,8 +29,6 @@ define(['backbone',
                 var self = this;
                 var options = {
                     success: function (model, resp, xhr) {
-                        console.log('response');
-                        console.log(model);
                         if (!model.ok) {
                             var data = {};
                             data.status = 'danger';
@@ -81,9 +79,6 @@ define(['backbone',
                     password = 'unused'
                 }
                 var secretAuth;
-                console.log('auth data');
-                console.log(username);
-                console.log(password);
                 try {
                     secretAuth = btoa(username + ":" + md5(password));
                 } catch (err) {

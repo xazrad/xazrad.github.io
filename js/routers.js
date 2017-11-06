@@ -30,7 +30,7 @@ define([
         },
         hostDetail: function (hostID) {
             var rootView = this.getOption('rootView');
-            rootView.hostDetailRoute();
+            rootView.hostDetailRoute(hostID);
 
         }
 

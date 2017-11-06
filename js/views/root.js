@@ -4,15 +4,15 @@
 
 define([
     'marionette',
-    'views/auth'
-], function (Marionette, viewsAuth) {
+    'views/auth',
+    'views/hosts'
+], function (Marionette, viewsAuth, viewsHosts) {
     var app = {};
 
     var NavBarView = Marionette.View.extend({
         tagName: 'ul',
         className: 'nav navbar-nav navbar-right',
         id: 'menu-top',
-        template: "#navbar-auth-tmpl",
         onRender: function () {
             this.$('a').removeClass('menu-top-active');
             var fragment = Backbone.history.getFragment();
@@ -32,27 +32,53 @@ define([
                 Backbone.history.navigate('login', {trigger: true});
                 return;
             }
-            // IndexView
+            this.showChildView('navBar', new NavBarView({
+                template: "#navbar-tmpl"
+            }));
+            this.showChildView('content', new viewsHosts.IndexView());
         },
         loginRoute: function () {
             localStorage.removeItem('accessKey');
-            this.showChildView('navBar', new NavBarView());
+            this.showChildView('navBar', new NavBarView({
+                template: "#navbar-auth-tmpl"
+            }));
             this.showChildView('content', new viewsAuth.LoginView());
         },
         signupRoute: function () {
             localStorage.removeItem('accessKey');
-            this.showChildView('navBar', new NavBarView());
+            this.showChildView('navBar', new NavBarView({
+                template: "#navbar-auth-tmpl"
+            }));
             this.showChildView('content', new viewsAuth.SignUpView());
         },
         resetPasswordRoute: function () {
-            this.showChildView('navBar', new NavBarView());
+            this.showChildView('navBar', new NavBarView({
+                template: "#navbar-auth-tmpl"
+            }));
             this.showChildView('content', new viewsAuth.ResetPasswordView());
         },
         hostAddRoute: function () {
-
+            if (!localStorage.accessKey) {
+                Backbone.history.navigate('login', {trigger: true});
+                return;
+            }
+            this.showChildView('navBar', new NavBarView({
+                template: "#navbar-tmpl"
+            }));
+            this.showChildView('content', new viewsHosts.HostAddView());
         },
         hostDetailRoute: function (hostID) {
-            // HostDetailView
+            if (!localStorage.accessKey) {
+                Backbone.history.navigate('login', {trigger: true});
+                return;
+            }
+            this.showChildView('navBar', new NavBarView({
+                template: "#navbar-tmpl"
+            }));
+            console.log(hostID);
+            this.showChildView('content', new viewsHosts.HostDetailView({
+                hostID: hostID
+            }));
         }
     });
 
