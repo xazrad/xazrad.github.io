@@ -75,10 +75,19 @@ define([
             this.showChildView('navBar', new NavBarView({
                 template: "#navbar-tmpl"
             }));
-            console.log(hostID);
             this.showChildView('content', new viewsHosts.HostDetailView({
                 hostID: hostID
             }));
+        },
+        sessionsRoute: function () {
+            if (!localStorage.accessKey) {
+                Backbone.history.navigate('login', {trigger: true});
+                return;
+            }
+            this.showChildView('navBar', new NavBarView({
+                template: "#navbar-tmpl"
+            }));
+            // session-tmpl
         }
     });
 

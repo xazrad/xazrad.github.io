@@ -31,6 +31,10 @@ define([
         hostDetail: function (hostID) {
             var rootView = this.getOption('rootView');
             rootView.hostDetailRoute(hostID);
+        },
+        sessions: function () {
+            var rootView = this.getOption('rootView');
+            rootView.sessionsRoute();
 
         }
 
@@ -47,6 +51,7 @@ define([
             'reset-password': 'resetPassword',
             'host/:id': 'hostDetail',
             'hostAdd': 'hostAdd',
+            'sessions': 'sessions',
             '*actions': 'other'
         }
     });
