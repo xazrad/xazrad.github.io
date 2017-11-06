@@ -18,5 +18,16 @@ define(['backbone', 'globals'],
                 checks: []
             }
         });
+
+        app.SessionModel = Backbone.Model.extend({
+            sync: globals.chicagoSync,
+            defaults: {
+                date_in: null,
+                describe: null,
+                platform: null,
+                currenr: null
+            }
+        });
+
         return app
 });

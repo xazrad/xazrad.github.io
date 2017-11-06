@@ -1,65 +1,60 @@
-/**
- * Created by radik on 27.09.17.
- */
 
 define([
-        'backbone',
-        'marionette',
-        'views'
-    ],
-    function(Backbone, Marionette, views) {
+    'marionette'
+], function (Marionette) {
+    var app = {};
 
-        var app = {};
+    var RouterController = Marionette.Object.extend({
+        index: function () {
+            var rootView = this.getOption('rootView');
+            rootView.indexRoute();
+        },
+        login: function () {
+            var rootView = this.getOption('rootView');
+            rootView.loginRoute();
+        },
+        signup: function () {
+            var rootView = this.getOption('rootView');
+            rootView.signupRoute();
+        },
+        resetPassword: function () {
+            var rootView = this.getOption('rootView');
+            rootView.resetPasswordRoute();
+        },
+        other: function () {
+            Backbone.history.navigate('', {trigger: true});
+        },
+        hostAdd: function () {
+            var rootView = this.getOption('rootView');
+            rootView.hostAddRoute();
+        },
+        hostDetail: function (hostID) {
+            var rootView = this.getOption('rootView');
+            rootView.hostDetailRoute(hostID);
+        },
+        sessions: function () {
+            var rootView = this.getOption('rootView');
+            rootView.sessionsRoute();
 
-        app.MainRouter = Marionette.AppRouter.extend({
-            routes: {
-                '': 'index',
-                'login': 'login',
-                'signup': 'signup',
-                'reset-password': 'resetPassword',
-                'host/:id': 'hostDetail',
-                'hostAdd': 'hostAdd',
-                '*actions': 'other'
+        }
 
-            },
-            other: function () {
-                this.navigate('', true);
-            },
-            hostDetail: function (hostID) {
-                if (!localStorage.accessKey) {
-                    this.navigate('login', {trigger: true});
-                    return
-                }
-                this.getOption('app').showView(new views.HostDetailView({
-                    hostID: hostID
-                }) );
-            },
-            hostAdd: function () {
-                if (!localStorage.accessKey) {
-                    this.navigate('login', {trigger: true});
-                    return
-                }
-                this.getOption('app').showView(new views.HostAddView() );
-            },
-            index: function () {
-                if (!localStorage.accessKey) {
-                    this.navigate('login', {trigger: true});
-                    return
-                }
-                this.getOption('app').showView(new views.IndexView() );
-            },
-            login: function () {
-                localStorage.removeItem('accessKey');
-                this.getOption('app').showView(new views.LoginView() );
-            },
-            signup: function () {
-                this.getOption('app').showView(new views.SignUpView() );
-            },
-            resetPassword: function () {
-                this.getOption('app').showView(new views.ResetPasswordView() );
-            }
-        });
+    });
 
-        return app;
+    app.MainRouter = Marionette.AppRouter.extend({
+        initialize: function (options) {
+            this.controller = new RouterController(options)
+        },
+        appRoutes: {
+            '': 'index',
+            'login': 'login',
+            'signup': 'signup',
+            'reset-password': 'resetPassword',
+            'host/:id': 'hostDetail',
+            'hostAdd': 'hostAdd',
+            'sessions': 'sessions',
+            '*actions': 'other'
+        }
+    });
+
+    return app;
 });
-

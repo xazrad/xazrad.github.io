@@ -12,5 +12,11 @@ define(['backbone', 'globals', 'models'],
             model: models.HostModel
         });
 
+        app.SessionCollection = Backbone.Collection.extend({
+            sync: globals.chicagoSync,
+            url: globals.rootPath + 'session/',
+            model: models.SessionModel
+        });
+
         return app
 });

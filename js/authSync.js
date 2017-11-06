@@ -5,16 +5,10 @@
 define(['backbone',
         'marionette',
         'globals',
-        'md5',
-        'waitMe'],
+        'md5'
+],
     function (Backbone, Marionette, globals, md5) {
         const rootPath = globals.rootPath;
-
-        var optionsWaitMe = {
-            text: 'Загрузка...',
-            bg: 'rgba(255,255,255,0.90)',
-            color: '#555'
-        };
 
         var app = {};
 
@@ -35,7 +29,6 @@ define(['backbone',
                 var self = this;
                 var options = {
                     success: function (model, resp, xhr) {
-                        self.getOption('view').$el.waitMe('hide');
                         if (!model.ok) {
                             var data = {};
                             data.status = 'danger';
@@ -51,8 +44,13 @@ define(['backbone',
                                 self.triggerMethod('alert', data);
                                 return;
                             }
-                            if (codeError == 427 || codeError == 428) {
+                            if (codeError == 427) {
                                 data.message = 'Email не найден';
+                                self.triggerMethod('alert', data);
+                                return;
+                            }
+                            if (codeError == 428) {
+                                data.message = 'Неверные данные';
                                 self.triggerMethod('alert', data);
                                 return;
                             }
@@ -69,62 +67,45 @@ define(['backbone',
                         console.log('error');
                     },
                     beforeSend: function(xhr) {
-                        self.getOption('view').$el.waitMe(optionsWaitMe);
                         xhr.setRequestHeader("Authorization", "Basic " + secretAuth);
                     }
                 };
                 Backbone.sync("create", dummy, options);
             },
-            getAuthBasic: function (username, password) {
+            getAuthBasic: function (data) {
+                var username = data.email;
+                var password = data.password;
+                if (password == undefined) {
+                    password = 'unused'
+                }
                 var secretAuth;
                 try {
                     secretAuth = btoa(username + ":" + md5(password));
                 } catch (err) {
-                    data = {};
-                    data.status = 'danger';
-                    data.message = 'Некорретные символы';
-                    this.triggerMethod('alert', data);
+                    var _data = {};
+                    _data.status = 'danger';
+                    _data.message = 'Некорретные символы';
+                    this.triggerMethod('alert', _data);
                 }
                 return secretAuth;
             },
-            resetPassword: function (email, password) {
-                if (!email) {
-                    var data = {};
-                    data.status = 'danger';
-                    data.message = 'Поле не заполнено';
-                    this.triggerMethod('alert', data);
-                    return
-                }
-                var authBasic = this.getAuthBasic(email, password);
+            resetPassword: function (data) {
+                var authBasic = this.getAuthBasic(data);
                 if (!authBasic) {
                     return
                 }
                 this.sync('auth/reset', authBasic);
 
             },
-            login: function (email, password) {
-                if (!email || !password) {
-                    var data = {};
-                    data.status = 'danger';
-                    data.message = 'Не все поля заполнены';
-                    this.triggerMethod('alert', data);
-                    return
-                }
-                var authBasic = this.getAuthBasic(email, password);
+            login: function (data) {
+                var authBasic = this.getAuthBasic(data);
                 if (!authBasic) {
                     return
                 }
                 this.sync('auth/signin/', authBasic);
             },
-            signUp: function (email, password) {
-                if (!email || !password) {
-                    var data = {};
-                    data.status = 'danger';
-                    data.message = 'Не все поля заполнены';
-                    this.triggerMethod('alert', data);
-                    return
-                }
-                var authBasic = this.getAuthBasic(email, password);
+            signUp: function (data) {
+                var authBasic = this.getAuthBasic(data);
                 if (!authBasic) {
                     return
                 }
