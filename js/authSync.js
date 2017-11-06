@@ -29,6 +29,8 @@ define(['backbone',
                 var self = this;
                 var options = {
                     success: function (model, resp, xhr) {
+                        console.log('response');
+                        console.log(model);
                         if (!model.ok) {
                             var data = {};
                             data.status = 'danger';
@@ -44,8 +46,13 @@ define(['backbone',
                                 self.triggerMethod('alert', data);
                                 return;
                             }
-                            if (codeError == 427 || codeError == 428) {
+                            if (codeError == 427) {
                                 data.message = 'Email не найден';
+                                self.triggerMethod('alert', data);
+                                return;
+                            }
+                            if (codeError == 428) {
+                                data.message = 'Неверные данные';
                                 self.triggerMethod('alert', data);
                                 return;
                             }
@@ -74,6 +81,9 @@ define(['backbone',
                     password = 'unused'
                 }
                 var secretAuth;
+                console.log('auth data');
+                console.log(username);
+                console.log(password);
                 try {
                     secretAuth = btoa(username + ":" + md5(password));
                 } catch (err) {
@@ -92,29 +102,15 @@ define(['backbone',
                 this.sync('auth/reset', authBasic);
 
             },
-            login: function (email, password) {
-                if (!email || !password) {
-                    var data = {};
-                    data.status = 'danger';
-                    data.message = 'Не все поля заполнены';
-                    this.triggerMethod('alert', data);
-                    return
-                }
-                var authBasic = this.getAuthBasic(email, password);
+            login: function (data) {
+                var authBasic = this.getAuthBasic(data);
                 if (!authBasic) {
                     return
                 }
                 this.sync('auth/signin/', authBasic);
             },
-            signUp: function (email, password) {
-                if (!email || !password) {
-                    var data = {};
-                    data.status = 'danger';
-                    data.message = 'Не все поля заполнены';
-                    this.triggerMethod('alert', data);
-                    return
-                }
-                var authBasic = this.getAuthBasic(email, password);
+            signUp: function (data) {
+                var authBasic = this.getAuthBasic(data);
                 if (!authBasic) {
                     return
                 }

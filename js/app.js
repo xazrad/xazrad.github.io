@@ -3,7 +3,7 @@
 require([
     'marionette',
     'routers',
-    'views'
+    'views/root'
     ],
 function (Marionette, routers, views) {
     var App = Marionette.Application.extend({
