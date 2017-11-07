@@ -203,81 +203,77 @@
                             <%- name %>
                         </div>
                         <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover">
-                                    <tbody>
-                                    <tr>
-                                        <td>Домен</td>
-                                        <% if (domain)  { %>
-                                        <td><%= domain.name %></td>
-                                        <%  }  else { %>
-                                        <td>нет информации</td>
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#main" data-toggle="tab">Основная информация</a></li>
+                                <li class=""><a href="#hosting" data-toggle="tab">Хостинг</a></li>
+                                <li class=""><a href="#checks" data-toggle="tab">Проверки</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane fade active in" id="main">
+                                    <br>
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <tbody>
+                                        <tr>
+                                            <td>Домен</td>
+                                            <% if (domain)  { %>
+                                            <td><%= domain.name %></td>
+                                            <%  }  else { %>
+                                            <td>нет информации</td>
+                                            <% } %>
+                                        </tr>
+                                        <tr>
+                                            <td>Истекает</td>
+                                            <% if (domain)  { %>
+                                            <td><%= moment(domain.experation_date).format('LLL') %></td>
+                                            <%  }  else { %>
+                                            <td>нет информации</td>
+                                            <% } %>
+                                        </tr>
+                                        <tr>
+                                            <td>url</td>
+                                            <td><a href="<%= http.url %>" target="_blank"><%= http.url %></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>ssl</td>
+                                            <td><%= moment(http.ssl).format('LLL') %></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane fade" id="hosting">
+                                    <br>
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <tbody>
+                                        <% for (item in hosting) { %>
+                                        <tr>
+                                            <td><%= hosting[item].country.name %></td>
+                                            <td><img src="<%= hosting[item].country.ico %>"></td>
+                                            <td><%= hosting[item].description %></td>
+                                            <td><%= hosting[item].ip %></td>
+                                            <td><%= hosting[item].provider.name %></td>
+                                            <td><img src="<%= hosting[item].provider.ico %>"></td>
+                                            <td><%= hosting[item].provider.domain %></td>
+                                        </tr>
                                         <% } %>
-                                    </tr>
-                                    <tr>
-                                        <td>Истекает</td>
-                                        <% if (domain)  { %>
-                                        <td><%= moment(domain.experation_date).format('LLL') %></td>
-                                        <%  }  else { %>
-                                        <td>нет информации</td>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane fade" id="checks">
+                                    <br>
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <tbody>
+                                        <% for (item in checks) { %>
+                                        <tr>
+                                            <td><%= moment(checks[item].updated_date).format('LLL') %></td>
+                                            <td><%= checks[item].ip %></td>
+                                            <td><%= checks[item].elapsed %></td>
+                                            <td><%= checks[item].status_code %></td>
+                                        </tr>
                                         <% } %>
-                                    </tr>
-                                    <tr>
-                                        <td>url</td>
-                                        <td><a href="<%= http.url %>" target="_blank"><%= http.url %></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>ssl</td>
-                                        <td><%= moment(http.ssl).format('LLL') %></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Хостинг</div>
-                        <div class="panel-body">
-                            <table class="table table-striped table-bordered table-hover">
-                                <tbody>
-                                <% for (item in hosting) { %>
-                                <tr>
-                                    <td><%= hosting[item].country.name %></td>
-                                    <td><img src="<%= hosting[item].country.ico %>"></td>
-                                    <td><%= hosting[item].description %></td>
-                                    <td><%= hosting[item].ip %></td>
-                                    <td><%= hosting[item].provider.name %></td>
-                                    <td><img src="<%= hosting[item].provider.ico %>"></td>
-                                    <td><%= hosting[item].provider.domain %></td>
-                                </tr>
-                                <% } %>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Проверки</div>
-                        <div class="panel-body">
-                            <table class="table table-striped table-bordered table-hover">
-                                <tbody>
-                                <% for (item in checks) { %>
-                                <tr>
-                                    <td><%= moment(checks[item].updated_date).format('LLL') %></td>
-                                    <td><%= checks[item].ip %></td>
-                                    <td><%= checks[item].elapsed %></td>
-                                    <td><%= checks[item].status_code %></td>
-                                </tr>
-                                <% } %>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
