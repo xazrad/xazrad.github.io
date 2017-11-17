@@ -13,10 +13,6 @@ define([
             var rootView = this.getOption('rootView');
             rootView.loginRoute();
         },
-        signup: function () {
-            var rootView = this.getOption('rootView');
-            rootView.signupRoute();
-        },
         resetPassword: function () {
             var rootView = this.getOption('rootView');
             rootView.resetPasswordRoute();
@@ -47,7 +43,6 @@ define([
         appRoutes: {
             '': 'index',
             'login': 'login',
-            'signup': 'signup',
             'reset-password': 'resetPassword',
             'host/:id': 'hostDetail',
             'hostAdd': 'hostAdd',

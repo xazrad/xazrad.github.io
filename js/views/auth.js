@@ -34,35 +34,34 @@ define([
         onRender: function () {
             this.$('form').validate(validateOptions);
         },
-        submit: function () {
+        submit: function (e) {
             if (!this.$('form').valid()) {
                 return;
             }
             var data = this.$('form').serializeJSON();
-            this.onSubmit(data);
+            this.onSubmit(data, e);
         }
     });
 
     app.LoginView = BaseAuthView.extend({
         template: '#login-tmpl',
-        onSubmit: function (data) {
-            this.syncOb.login(data);
+        onSubmit: function (data, e) {
+            var name = $(e.currentTarget).attr('name');
+            if (name == 'login') {
+                this.syncOb.login(data);
+            } else {
+                this.syncOb.signUp(data);
+            }
         },
         onSuccess: function (data) {
-            localStorage.accessKey = data;
-            Backbone.history.navigate('', {trigger: true});
-        }
-    });
-
-    app.SignUpView = BaseAuthView.extend({
-        template: '#signup-tml',
-        onSubmit: function (data) {
-            this.syncOb.signUp(data);
-        },
-        onSuccess: function () {
-            this.getUI('panel').removeClass('panel-danger');
-            this.getUI('panel').addClass('panel-info');
-            this.getUI('heading').html('Информация по восстановлению выслана вам на email');
+            if (data) {
+                localStorage.accessKey = data;
+                Backbone.history.navigate('', {trigger: true});
+            } else {
+                this.getUI('panel').removeClass('panel-danger');
+                this.getUI('panel').addClass('panel-info');
+                this.getUI('heading').html('Подтвердите ваш email');
+            }
         }
     });
 

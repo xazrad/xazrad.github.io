@@ -44,13 +44,6 @@ define([
             }));
             this.showChildView('content', new viewsAuth.LoginView());
         },
-        signupRoute: function () {
-            localStorage.removeItem('accessKey');
-            this.showChildView('navBar', new NavBarView({
-                template: "#navbar-auth-tmpl"
-            }));
-            this.showChildView('content', new viewsAuth.SignUpView());
-        },
         resetPasswordRoute: function () {
             this.showChildView('navBar', new NavBarView({
                 template: "#navbar-auth-tmpl"

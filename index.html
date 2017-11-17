@@ -61,8 +61,7 @@
         </section>
 
         <script type="text/template" id="navbar-auth-tmpl">
-            <li><a href="#/login">Войти</a></li>
-            <li><a href="#/signup">Зарегистрироваться</a></li>
+            <li><a href="#/login">Авторизация</a></li>
             <li><a href="#/reset-password">Восстановить пароль</a></li>
         </script>
         <script type="text/template" id="navbar-tmpl">
@@ -73,7 +72,7 @@
         <script type="text/template" id="login-tmpl">
             <div class="row pad-botm">
                 <div class="col-md-12">
-                    <h4 class="header-line">Войти</h4>
+                    <h4 class="header-line">Авторизация</h4>
                 </div>
             </div>
             <div class="row">
@@ -90,35 +89,8 @@
                                     <label>Пароль</label>
                                     <input class="form-control" name="password" type="password" required/>
                                 </div>
-                                <button type="button" class="btn btn-info">Войти </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </script>
-        <script type="text/template" id="signup-tml">
-            <div class="row pad-botm">
-                <div class="col-md-12">
-                    <h4 class="header-line">Зарегистрироваться</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                        </div>
-                        <div class="panel-body">
-                            <form role="form">
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <input class="form-control" name="email" type="email" required/>
-                                </div>
-                                <div class="form-group">
-                                    <label>Пароль</label>
-                                    <input class="form-control" name="password" type="password" required/>
-                                </div>
-                                <button type="button" class="btn btn-info">Зарегистрироваться </button>
+                                <button type="button" class="btn btn-info" name="login">Войти</button>
+                                <button type="button" class="btn btn-danger" name="signup">Зарегистроваться</button>
                             </form>
                         </div>
                     </div>
